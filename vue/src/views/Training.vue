@@ -1,12 +1,5 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
-    <div>
-        Обучение
-    </div>
+	<div>Обучение</div>
 </template>
-
-
-

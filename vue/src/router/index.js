@@ -28,6 +28,14 @@ const router = createRouter({
             meta: {
                 layout: layoutTypes.LOGIN,
             },
+        },
+        {
+            path: "/:catchAll(.*)",
+            name: "NotFound",
+            component: () => import('../views/Error.vue'),
+            meta: {
+                layout: layoutTypes.ERROR,
+            }
         }
     ]
 })
