@@ -9,7 +9,6 @@ export const PrimeVueConfig = {
         preset: Aura,
         options: {
             prefix: 'p',
-            darkModeSelector: 'system',
             cssLayer: false
         }
     }

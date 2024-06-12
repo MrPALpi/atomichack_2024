@@ -1,15 +1,21 @@
-import { inject } from 'vue';
+import { defineStore } from 'pinia'
+import { inject, ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
-const router = useRouter()
-const axios = inject('axios');
 
 export const useUserStore = defineStore('user', () => {
-    const login = ref('')
+    const router = useRouter()
+    const axios = inject('axios');
+    const login = ref('Иван')
     const isAuth = computed(() => !!login.value.length)
 
 
     function setUser(newLogin) {
         login.value = newLogin;
+    }
+
+    function exit() {
+        setUser('');
+        router.push('/auth');
     }
 
     async function enter(formData) {
@@ -25,5 +31,5 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    return { login, isAuth, enter }
+    return { login, isAuth, enter, exit }
 })
