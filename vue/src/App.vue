@@ -1,13 +1,10 @@
 <script setup>
-import Toast from 'primevue/toast';
+	import Toast from 'primevue/toast';
+	import AppLayout from './layouts/AppLayout.vue';
 </script>
 
 <template>
-  <RouterView />
- 
-
+	<app-layout>
+		<RouterView />
+	</app-layout>
 </template>
-
-<style scoped>
-
-</style>
