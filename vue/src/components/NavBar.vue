@@ -35,6 +35,8 @@
 		width: 100%;
 		background-color: var(--p-content-background);
 		padding: 20px 0;
+		z-index: 1;
+		border-bottom: 1px solid var(--p-fileupload-border-color);
 	}
 
 	.navbar__container {

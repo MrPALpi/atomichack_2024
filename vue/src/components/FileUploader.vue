@@ -12,7 +12,7 @@
 				:custom-upload="true"
 				@uploader="onAdvancedUpload"
 				:multiple="true"
-				accept="image/*"
+				accept="image/*,application/zip"
 				:maxFileSize="10000000"
 			>
 				<template #empty>
