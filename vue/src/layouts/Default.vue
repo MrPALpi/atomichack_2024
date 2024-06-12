@@ -3,10 +3,8 @@
 </script>
 
 <template>
-	<div>
-		<nav-bar></nav-bar>
-		<main>
-			<slot />
-		</main>
-	</div>
+	<nav-bar></nav-bar>
+	<main class="container content">
+		<slot />
+	</main>
 </template>

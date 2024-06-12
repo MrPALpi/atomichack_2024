@@ -1,10 +1,8 @@
 <script setup>
-
+	import FileUploader from '../components/FileUploader.vue';
 </script>
 
 <template>
-    <div>
-        Проверка
-    </div>
-    
+	<FileUploader></FileUploader>
+	<div>Проверка</div>
 </template>

@@ -30,8 +30,11 @@
 </template>
 <style lang="scss" scoped>
 	.navbar {
+		position: fixed;
+		top: 0;
+		width: 100%;
 		background-color: var(--p-content-background);
-		padding: 40px 0;
+		padding: 20px 0;
 	}
 
 	.navbar__container {

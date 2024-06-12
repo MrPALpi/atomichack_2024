@@ -14,7 +14,7 @@ body {
 body,
 #app {
 	min-height: 100vh;
-	background-color: white;
+	background-color: var(--p-zinc-800);
 }
 
 a {
@@ -28,6 +28,10 @@ a {
 	margin: 0 auto;
 	width: 100%;
 	background-color: inherit;
+}
+
+.content {
+	padding-top: 100px;
 }
 
 @media (max-width: 768) {
