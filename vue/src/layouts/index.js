@@ -1,5 +1,7 @@
+
+
 export const layouts = {
-  DEFAULT: () => import('./Default.vue'),
-  LOGIN: () => import('./Login.vue'),
-  ERROR: () => import('./Error.vue')
+  DEFAULT: {name: 'DEFAULT', component: () => import('./Default.vue')},
+  LOGIN: {name: 'LOGIN', component: () => import('./Login.vue')},
+  ERROR:{name: 'ERROR', component: () => import('./Error.vue')}
 };

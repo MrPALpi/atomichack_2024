@@ -1,14 +1,18 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import { defineAsyncComponent, computed } from 'vue';
+import { defineAsyncComponent, computed, watch, ref } from 'vue';
 
 import { layouts } from './index.js';
 
 const route = useRoute();
-const layout = computed(() => {
-	const layoutName = route.meta.layout ?? layouts['DEFAULT'];
-	return defineAsyncComponent(layoutName);
-})
+
+const layout = ref(defineAsyncComponent(layouts['DEFAULT'].component));
+
+watch(() => route.meta.layout, async (newvalue) => {
+	const layoutName = newvalue.component ?? layouts['DEFAULT'].component;
+	layout.value = defineAsyncComponent(layoutName);
+});
+
 
 </script>
 
