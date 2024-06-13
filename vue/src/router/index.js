@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import { layoutTypes } from '../layouts/layoutTypes'
 // import { layoutMiddleware } from './middleware/layoutMiddleware'
-import {types} from '../layouts'
+import {layouts} from '../layouts'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,7 +11,7 @@ const router = createRouter({
             name: 'Check',
             component: () => import('../views/Check.vue'),
             meta: {
-                layout: types.DEFAULT,
+                layout: layouts.DEFAULT,
             },
         },
         {
@@ -19,7 +19,7 @@ const router = createRouter({
             name: 'Training',
             component: () => import('../views/Training.vue'),
             meta: {
-                layout: types.DEFAULT,
+                layout: layouts.DEFAULT,
             },
         },
         {
@@ -27,7 +27,7 @@ const router = createRouter({
             name: 'Auth',
             component: () => import('../views/Auth.vue'),
             meta: {
-                layout: types.LOGIN,
+                layout: layouts.LOGIN,
             },
         },
         {
@@ -35,7 +35,7 @@ const router = createRouter({
             name: "NotFound",
             component: () => import('../views/Error.vue'),
             meta: {
-                layout: types.ERROR,
+                layout: layouts.ERROR,
             }
         }
     ]

@@ -6,7 +6,7 @@ import { layouts } from './index.js';
 
 const route = useRoute();
 const layout = computed(() => {
-	const layoutName = layouts[route.meta.layout] ?? layouts['default'];
+	const layoutName = route.meta.layout ?? layouts['DEFAULT'];
 	return defineAsyncComponent(layoutName);
 })
 
