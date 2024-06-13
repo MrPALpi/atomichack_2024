@@ -1,19 +1,46 @@
 <script setup>
-	import FileUploader from '../components/FileUploader.vue';
-	import { onMounted, onUnmounted } from "vue";
+	import FileUploader from '@/components/FileUploader/FileUploader.vue';
+	import ToggleSwitch from 'primevue/toggleswitch';
 
-	onMounted(() => {
-    //eslint-disable-next-line no-console
-    console.log('check page', "mounted");
-  });
+	import { shallowRef, computed } from 'vue';
 
-  onUnmounted(() => {
-    //eslint-disable-next-line no-console
-    console.log('check page', "unmounted");
-  });
+	const fileType = shallowRef('image/*');
+	const files = shallowRef([]);
+	const isActiveSwitch = computed(() => {
+		return !!files.value.length;
+	});
 </script>
 
 <template>
-	<FileUploader></FileUploader>
-	<div>Проверка</div>
+	<section class="page-check">
+		<div class="page-check__file-type">
+			<toggle-switch
+				v-model="fileType"
+				:disabled="isActiveSwitch"
+				trueValue=".zip"
+				falseValue="image/*"
+			/>
+			<div>Тип файла: {{ fileType }}</div>
+		</div>
+		<FileUploader
+			v-model="files"
+			name="demo[]"
+			:custom-upload="true"
+			:multiple="true"
+			:accept="fileType"
+			:maxFileSize="10000000"
+		/>
+	</section>
 </template>
+
+<style lang="scss" scoped>
+	.page-check {
+		display: grid;
+		gap: 20px;
+	}
+	.page-check__file-type {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+</style>

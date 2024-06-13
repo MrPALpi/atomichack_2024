@@ -4,8 +4,9 @@ import { useRouter } from 'vue-router'
 
 export const useUserStore = defineStore('user', () => {
     const router = useRouter()
-    const axios = inject('axios');
+    const axios = inject('axios')
     const login = ref('Иван')
+
     const isAuth = computed(() => !!login.value.length)
 
 
@@ -19,16 +20,13 @@ export const useUserStore = defineStore('user', () => {
     }
 
     async function enter(formData) {
-        try {
-            const response = await axios.post('enter', formData);
 
-            if (response.status === 200) {
-                setUser(formData.login);
-                router.push('/');
-            }
-        } catch (e) {
-            console.log(e)
-        }
+        await axios.post('enter', formData).catch((e) => console.log(e));
+
+        setUser(formData.login);
+        router.push('/');
+
+
     }
 
     return { login, isAuth, enter, exit }
