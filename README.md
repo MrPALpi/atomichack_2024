@@ -1,3 +1,7 @@
+## Развертывание проекта
+`cp .env.example .env` + настроить перменные
+`docker compose up -d`
+
 ## Настройка сервиса fast-api
 Требования:
  - poetry
