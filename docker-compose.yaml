@@ -19,7 +19,7 @@ services:
       - atomic-hack
 
   flask-prod:
-    container_name: atomic-hack-flask
+    container_name: atomic-hack-fast-api
     build: ./flask
     ports:
       - "5000:5000"

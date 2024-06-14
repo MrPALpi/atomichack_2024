@@ -3,7 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# from .endpoints.main_pwa.router import router as main_pwa_router
+from .endpoints.auth import router as auth_router
+from .endpoints.yolo import router as yolo_router
 
 
 stage = os.environ.get('STAGE', 'dev')
@@ -23,4 +24,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.include_router(main_pwa_router, prefix="/main/pwa")
+app.include_router(auth_router, prefix="/api/auth")
+app.include_router(yolo_router, prefix="/api/yolo")
