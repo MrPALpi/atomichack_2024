@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "yolo-proj"
+version = "0.1.0"
+description = "YOLO model container"
+authors = ["Nikita Mazein <namer4666@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+opencv-python = "^4.10.0.82"
+numpy = "^1.26.4"
+ultralytics = {git = "https://github.com/THU-MIG/yolov10.git"}
+supervision = "^0.21.0"
+huggingface-hub = "^0.23.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
