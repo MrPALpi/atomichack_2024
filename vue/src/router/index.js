@@ -21,6 +21,14 @@ const router = createRouter({
             },
         },
         {
+            path: '/result/:id',
+            name: 'Result',
+            component: () => import('@/views/Result.vue'),
+            meta: {
+                layout: layouts.DEFAULT,
+            },
+        },
+        {
             path: '/auth',
             name: 'Auth',
             component: () => import('@/views/Auth.vue'),
