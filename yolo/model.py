@@ -1,7 +1,6 @@
 import os
 import cv2
 import json
-import supervision as sv
 from ultralytics import YOLOv10
 
 class YOLODetection:
@@ -120,7 +119,7 @@ def example(id = 1):
 
     yolo_detector = YOLODetection(src_folder, results_folder, cm_per_frame, cm_per_sec, model_type)
     yolo_detector.detect_images()
-    # yolo_detector.detect_videos()
+    # yolo_detector.detect_videos() # TODO: test video detection
 
 if __name__ == '__main__':
     example()

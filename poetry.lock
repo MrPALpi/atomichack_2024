@@ -200,17 +200,6 @@ docs = ["ipython", "matplotlib", "numpydoc", "sphinx"]
 tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
-name = "defusedxml"
-version = "0.7.1"
-description = "XML bomb protection for Python stdlib modules"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-files = [
-    {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
-    {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
-]
-
-[[package]]
 name = "filelock"
 version = "3.15.1"
 description = "A platform independent file lock."
@@ -903,28 +892,6 @@ numpy = [
 ]
 
 [[package]]
-name = "opencv-python-headless"
-version = "4.10.0.82"
-description = "Wrapper package for OpenCV python bindings."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "opencv-python-headless-4.10.0.82.tar.gz", hash = "sha256:de9e742c1b9540816fbd115b0b03841d41ed0c65566b0d7a5371f98b131b7e6d"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:a09ed50ba21cc5bf5d436cb0e784ad09c692d6b1d1454252772f6c8f2c7b4088"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-macosx_12_0_x86_64.whl", hash = "sha256:977a5fd21e1fe0d3d2134887db4441f8725abeae95150126302f31fcd9f548fa"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:db4ec6755838b0be12510bfc9ffb014779c612418f11f4f7e6f505c36124a3aa"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:10a37fa5276967ecf6eb297295b16b28b7a2eb3b568ca0ee469fb1a5954de298"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-win32.whl", hash = "sha256:94736e9b322d13db4768fd35588ad5e8995e78e207263076bfbee18aac835ad5"},
-    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-win_amd64.whl", hash = "sha256:c1822fa23d1641c0249ed5eb906f4c385f7959ff1bd601a776d56b0c18914af4"},
-]
-
-[package.dependencies]
-numpy = [
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
-    {version = ">=1.23.5", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
-]
-
-[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
@@ -1327,30 +1294,6 @@ files = [
 ]
 
 [[package]]
-name = "supervision"
-version = "0.21.0"
-description = "A set of easy-to-use utils that will come in handy in any Computer Vision project"
-optional = false
-python-versions = "<4.0,>=3.8"
-files = [
-    {file = "supervision-0.21.0-py3-none-any.whl", hash = "sha256:26ccbdb10e007c0582a4179853fe00faff1ce079834b6fc7d1271be507360a93"},
-    {file = "supervision-0.21.0.tar.gz", hash = "sha256:265d8b6f23c750a454caa1d98f75dc918c30ab9d248a63daa4251792e8d9e5e9"},
-]
-
-[package.dependencies]
-defusedxml = ">=0.7.1,<0.8.0"
-matplotlib = ">=3.6.0"
-numpy = ">=1.21.2"
-opencv-python-headless = ">=4.5.5.64"
-pillow = ">=9.4"
-pyyaml = ">=5.3"
-scipy = {version = ">=1.10.0,<2.0.0", markers = "python_version >= \"3.9\""}
-
-[package.extras]
-assets = ["requests (>=2.26.0,<=2.32.3)", "tqdm (>=4.62.3,<=4.66.4)"]
-desktop = ["opencv-python (>=4.5.5.64)"]
-
-[[package]]
 name = "sympy"
 version = "1.12.1"
 description = "Computer algebra system (CAS) in Python"
@@ -1604,4 +1547,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "624c07cacd74172192abfd9b7069b634b5ab85e7baf9e7c53ef9d6ea9680ec1d"
+content-hash = "bbd72c5a0980c827df1048f1e0f1f43cc3dc4210356d92fafc878e8736a43f50"
