@@ -1,15 +1,6 @@
 version: "3"
 
 services:
-  # vue-dev:
-  #   container_name: atomic-hack-vue-dev
-  #   build: ./vue
-  #   ports:
-  #     - "5173:5173"
-  #   networks:
-  #     - atomic-hack
-  #   command: npm run dev
-
   vue-prod:
     container_name: atomic-hack-vue
     build: ./vue
@@ -27,6 +18,12 @@ services:
     build: ./fast_api
     expose:
       - "5000:5000"
+    networks:
+      - atomic-hack
+
+  yolo-prod:
+    container_name: atomic-hack-yolo
+    build: ./yolo
     networks:
       - atomic-hack
 
