@@ -8,8 +8,6 @@
 	});
 
 	const $emit = defineEmits(['removeFile']);
-
-	console.log($props.value);
 </script>
 <template>
 	<div class="file-cards">
@@ -91,5 +89,16 @@
 	.file-cards__item-name {
 		word-break: break-word;
 		text-align: center;
+	}
+
+	.list-enter-active,
+	.list-leave-active {
+		transition: all 0.3s ease;
+	}
+
+	.list-enter-from,
+	.list-leave-to {
+		opacity: 0;
+		transform: translateY(-30px);
 	}
 </style>

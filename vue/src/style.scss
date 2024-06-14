@@ -34,21 +34,6 @@ a {
 	padding-top: 100px;
 }
 
-.list-enter-active,
-.list-leave-active {
-	transition: opacity 0.3s ease, transform 0.3s;
-}
-
-.list-enter-from,
-.list-leave-to {
-	opacity: 0;
-	transform: translateX(30px);
-}
-
-.list-leave-active {
-	position: absolute;
-}
-
 .p-fileupload-header {
 	flex-wrap: wrap;
 }
