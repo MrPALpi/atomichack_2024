@@ -4,5 +4,7 @@
 **/*.log
 **/.pyc
 **/__pycache__
+**/.venv
+**/task
 **/atomick-hack.db
 **/.env
