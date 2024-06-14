@@ -13,15 +13,19 @@ services:
   vue-prod:
     container_name: atomic-hack-vue
     build: ./vue
-    ports:
+    expose:
       - "4173:4173"
+    environment:
+      VITE_PROXY_URL: ${VITE_PROXY_URL}
     networks:
       - atomic-hack
 
-  flask-prod:
+  fast-api-prod:
     container_name: atomic-hack-fast-api
-    build: ./flask
     ports:
+      - "80:5000"
+    build: ./fast_api
+    expose:
       - "5000:5000"
     networks:
       - atomic-hack
@@ -36,9 +40,24 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
+  pgsql:
+    container_name: atomic-hack-pgsql
+    image: dockerhub.timeweb.cloud/library/postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DEBUG: ${DEBUG}
+    volumes:
+      - docs-pgsql-volume:/var/lib/postgresql/data
+    networks:
+      - atomic-hack
+
 networks:
   atomic-hack:
     driver: bridge
 
 volumes:
   data:
+  docs-pgsql-volume:
+    driver: local
