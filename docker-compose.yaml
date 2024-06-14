@@ -1,14 +1,14 @@
 version: "3"
 
 services:
-  vue-dev:
-    container_name: atomic-hack-vue-dev
-    build: ./vue
-    ports:
-      - "5173:5173"
-    networks:
-      - atomic-hack
-    command: npm run dev
+  # vue-dev:
+  #   container_name: atomic-hack-vue-dev
+  #   build: ./vue
+  #   ports:
+  #     - "5173:5173"
+  #   networks:
+  #     - atomic-hack
+  #   command: npm run dev
 
   vue-prod:
     container_name: atomic-hack-vue
@@ -18,6 +18,27 @@ services:
     networks:
       - atomic-hack
 
+  flask-prod:
+    container_name: atomic-hack-flask
+    build: ./flask
+    ports:
+      - "5000:5000"
+    networks:
+      - atomic-hack
+
+  portainer:
+    container_name: atomic-hack-portainer
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9443:9443
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
 networks:
   atomic-hack:
     driver: bridge
+
+volumes:
+  data:

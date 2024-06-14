@@ -1,4 +1,4 @@
-FROM huecker.io/library/node:latest
+FROM dockerhub.timeweb.cloud/library/node:latest
 
 WORKDIR /app
 
