@@ -13,9 +13,17 @@ const router = createRouter({
             },
         },
         {
-            path: '/training',
-            name: 'Training',
-            component: () => import('@/views/Training.vue'),
+            path: '/results/:id',
+            name: 'Results',
+            component: () => import('@/views/Results.vue'),
+            meta: {
+                layout: layouts.DEFAULT,
+            },
+        },
+        {
+            path: '/result/:id',
+            name: 'Result',
+            component: () => import('@/views/Result.vue'),
             meta: {
                 layout: layouts.DEFAULT,
             },
