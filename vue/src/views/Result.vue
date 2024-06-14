@@ -23,7 +23,7 @@ const $axios = inject('axios');
 const data = ref();
 // console.log(route.params.id);
 
-$axios.get(`/api/yolo/${route.params.id}`).then((req)=>{
+$axios.get(`/api/task/${route.params.id}/result/meta`).then((req)=>{
     // data.value = req.data
     console.log(req)
 });

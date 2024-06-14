@@ -1,19 +1,38 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import Card from 'primevue/card';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 
-onMounted(() => {
-//eslint-disable-next-line no-console
-console.log('auth page', "mounted");
-});
-
-onUnmounted(() => {
-//eslint-disable-next-line no-console
-console.log('auth page', "unmounted");
-});
+const submit = (e) => {
+    const formData = Object.fromEntries(new FormData(e.currentTarget));
+    userStore.enter(formData);
+}
 </script>
 
 <template>
-    <div>
-        Авторизация
-    </div>
+    <Card class="login-card">
+        <template #title>Авторизация</template>
+        <template #content>
+            <form @submit.prevent="submit" class="login-form">
+                    <InputText class="login-form__input" name="login" type="text" required="true" minlength="3" placeholder="Логин"/>
+                    <InputText class="login-form__input" name="password" type="password" required="true" minlength="5" placeholder="Пароль"/>
+                <Button type="submit">Войти</Button>
+            </form>
+        </template>
+    </Card>
 </template>
+
+<style lang="scss" scoped>
+
+    .login-form {
+        margin-top: 30px;
+        display: grid;
+        gap: 15px;
+    }
+
+    .login-form__input {
+        width: 100%;
+    }
+</style>
