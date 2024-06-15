@@ -13,11 +13,12 @@ router = APIRouter()
 @router.get("/user-task-list")
 async def get_user_task_list(session: AsyncSessionDep, user_id: int):
     stmt = f"""
-        SELECT task.id, COUNT(attachment.id)
+        SELECT task.id, task.created_date,  COUNT(attachment.id)
         FROM task
         INNER JOIN attachment ON task.id = attachment.owner_id
         WHERE task.user_id = {user_id}
-        GROUP BY task.id;
+        GROUP BY task.id
+        ORDER BY task.created_date DESC;
     """
 
     result = []
@@ -25,7 +26,7 @@ async def get_user_task_list(session: AsyncSessionDep, user_id: int):
     res = await session.execute(text(stmt))
 
     for row in res.tuples():
-        result.append({"task_id": row[0], "count_src": row[1]})
+        result.append({"task_id": row[0], "count_src": row[2], "created_date": row[1]})
 
     return result
 
