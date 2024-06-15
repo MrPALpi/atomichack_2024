@@ -3,6 +3,8 @@
 	import ToggleSwitch from 'primevue/toggleswitch';
 	import { shallowRef, computed, inject } from 'vue';
 	import { useUserStore } from '@/stores/user';
+	import * as toast from '@/plugins/toast'
+
 
 	const $user = useUserStore();
 
@@ -15,9 +17,7 @@
 
 	const upload = async () => {
 		const formData = new FormData();
-		
-		
-			const promise = Promise.all(files.value.map(async (file) => {
+		const promise = Promise.all(files.value.map(async (file) => {
 				if (fileType.value === 'image/*') {
 					const res = await $axios.get(file.objectURL, {responseType: 'blob'});
 					formData.append('files', res.data);
@@ -28,8 +28,8 @@
 
 		formData.append('user_id', $user.id);
 
-		promise.then(()=>{
-			$axios({
+		promise.then(async ()=>{
+			const res = await $axios({
 				method: 'post',
 				url: '/api/yolo/upload',
 				data: formData,
@@ -37,6 +37,10 @@
 					'Content-Type': `multipart/form-data;`,
 				},
 			});
+
+			if (res.status === 200) {
+				toast.success('Успех', 'Файлы загружены! Результаты скоро будут загружены.');
+			}
 		})
 	}
 </script>
