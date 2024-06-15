@@ -22,7 +22,7 @@ async def get_yolo_tcp_socket():
         try:
             s.connect((YOLO_HOST, YOLO_PORT))
             yield s
-        except:
+        except ConnectionRefusedError:
             yield None
 
 

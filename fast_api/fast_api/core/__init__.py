@@ -7,6 +7,7 @@ from fast_api.database import db_manager
 from fast_api.endpoints.auth import router as auth_router
 from fast_api.endpoints.yolo import router as yolo_router
 from fast_api.endpoints.task import router as task_router
+from fast_api.endpoints.attachment import router as attachment_router
 
 
 app = FastAPI()
@@ -26,6 +27,7 @@ app = FastAPI()
 app.include_router(auth_router, prefix="/api/auth")
 app.include_router(yolo_router, prefix="/api/yolo")
 app.include_router(task_router, prefix="/api/task")
+app.include_router(attachment_router, prefix="/api/attachment")
 
 @app.on_event("startup")
 async def db_startup():
