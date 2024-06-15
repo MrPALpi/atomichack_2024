@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { layouts } from '../layouts'
+import middlewares from './middleware'
+import auth from './middleware/auth'
+import { useUserStore } from '@/stores/user'
+
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +14,7 @@ const router = createRouter({
             component: () => import('@/views/Check.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: [middlewares.AUTH]
             },
         },
         {
@@ -18,6 +23,7 @@ const router = createRouter({
             component: () => import('@/views/Results.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: [middlewares.AUTH]
             },
         },
         {
@@ -26,6 +32,7 @@ const router = createRouter({
             component: () => import('@/views/Result.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: [middlewares.AUTH]
             },
         },
         {
@@ -46,5 +53,11 @@ const router = createRouter({
         }
     ]
 })
+
+
+router.beforeEach((to, from, next)=>{
+    const $user = useUserStore();
+    auth(to, next, $user.isAuth)
+});
 
 export default router
