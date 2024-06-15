@@ -28,7 +28,6 @@
 			:custom-upload="true"
 			:multiple="true"
 			:accept="fileType"
-			:maxFileSize="10000000"
 		/>
 	</section>
 </template>
