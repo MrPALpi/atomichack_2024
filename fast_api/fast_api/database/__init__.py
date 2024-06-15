@@ -11,7 +11,9 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-database_url = "postgresql+asyncpg://postgres:example@127.0.0.1:5432/atomic_hack"
+import os
+
+database_url = f"postgresql+asyncpg://postgres:example@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/atomic_hack"
 
 Base = declarative_base()
 
