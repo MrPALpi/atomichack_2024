@@ -1,5 +1,5 @@
 <script setup>
-	import { useUserStore } from '../stores/user';
+	import { useUserStore } from '@/stores/user';
 	import SplitButton from 'primevue/splitbutton';
 
 	const $user = useUserStore();
@@ -13,7 +13,7 @@
 			</div>
 			<div class="navbar__user">
 				<SplitButton
-					:label="$user.login"
+					:label="$user.name"
 					:model="[
 						{
 							label: 'Выйти',
