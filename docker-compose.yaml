@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  vue-prod:
+  vue:
     container_name: atomic-hack-vue
     build: ./vue
     expose:
@@ -11,7 +11,7 @@ services:
     networks:
       - atomic-hack
 
-  fast-api-prod:
+  fast-api:
     container_name: atomic-hack-fast-api
     depends_on:
       - pgsql
@@ -30,7 +30,7 @@ services:
     networks:
       - atomic-hack
 
-  yolo-prod:
+  yolo:
     container_name: atomic-hack-yolo
     build: ./yolo
     networks:
