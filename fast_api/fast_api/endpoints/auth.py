@@ -32,6 +32,6 @@ async def registration_user(session: AsyncSessionDep, user: LoginUser):
 async def registration_user(session: AsyncSessionDep, user: LoginUser):
     hashed = hashlib.md5(user.password.encode())
     db_user = User(name=user.login, password_hash=hashed.hexdigest())
-
-    await session.add(db_user).commit()
+    session.add(db_user)
+    await session.commit()
     return db_user
