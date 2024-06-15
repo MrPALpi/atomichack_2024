@@ -41,11 +41,15 @@ async def upload(
     tcp_data = {
         "task_id": task.id
     }
-
+    yolo_error = False
+    
     # Отправка task id для нейронки
-    socket.sendall(json.dumps(tcp_data).encode('utf-8'))
+    if socket is not None:
+        socket.sendall(json.dumps(tcp_data).encode('utf-8'))
+    else:
+        yolo_error = True
     
     return {
         "file_size": len(files),
-        "status": "success"
+        "status": "failed" if yolo_error else "success"
     }
