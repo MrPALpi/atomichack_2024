@@ -1,4 +1,4 @@
-from sqlalchemy import String, Integer, LargeBinary
+from sqlalchemy import String, Boolean, Integer, LargeBinary
 from sqlalchemy.schema import Column
 
 from fast_api.database import Base
@@ -10,5 +10,6 @@ class Attachment(Base):
     name = Column(String(255), nullable=False)
     owner_name = Column(String(255), nullable=False)
     owner_id = Column(Integer(), nullable=False)
-    type = Column(String(31), nullable=False, default='image')
+    type = Column(String(31), nullable=False)
+    is_processed = Column(Boolean(), nullable=False, default=False)
     data = Column(LargeBinary)
