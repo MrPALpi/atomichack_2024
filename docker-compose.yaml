@@ -14,6 +14,7 @@ services:
   fast-api:
     container_name: atomic-hack-fast-api
     depends_on:
+      - yolo
       - pgsql
     ports:
       - "5000:5000"
@@ -24,15 +25,19 @@ services:
       DEBUG_MODE: ${DEBUG}
       DB_HOST: atomic-hack-pgsql
       DB_PORT: 5432
-      DB_LOGIN: ${POSTGRES_LOGIN}
+      DB_USERNAME: ${POSTGRES_LOGIN}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB_NAME}
+      YOLO_HOST: atomic-hack-yolo
+      YOLO_PORT: ${YOLO_SERVER_PORT}
     networks:
       - atomic-hack
 
   yolo:
     container_name: atomic-hack-yolo
     build: ./yolo
+    expose:
+      - "65432:65432"
     networks:
       - atomic-hack
 
@@ -53,7 +58,7 @@ services:
       - "5432:5432"
     environment:
       DEBUG_MODE: ${DEBUG}
-      POSTGRES_LOGIN: ${POSTGRES_LOGIN}
+      POSTGRES_USERNAME: ${POSTGRES_LOGIN}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB_NAME}
     volumes:

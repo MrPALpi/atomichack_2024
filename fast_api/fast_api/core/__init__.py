@@ -9,22 +9,19 @@ from fast_api.endpoints.yolo import router as yolo_router
 from fast_api.endpoints.task import router as task_router
 
 
-stage = os.environ.get('STAGE', 'dev')
-
-
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-]
+# origins = [
+#     "http://localhost:5173",
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 app.include_router(auth_router, prefix="/api/auth")
 app.include_router(yolo_router, prefix="/api/yolo")

@@ -1,9 +1,9 @@
-from sqlalchemy.orm import declarative_base
-
+import os
 import contextlib
 from typing import Optional
 
-from sqlalchemy import exc
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import URL, exc
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -11,9 +11,15 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-import os
 
-database_url = f"postgresql+asyncpg://postgres:example@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/atomic_hack"
+database_url = URL.create(
+    "postgresql+asyncpg",
+    username=os.environ.get('DB_USERNAME', "postgres"),
+    password=os.environ.get('DB_PASSWORD', "example"),
+    host=os.environ.get('DB_HOST', '127.0.0.1'),
+    port=os.environ.get('DB_PORT', 5432),
+    database=os.environ.get('DB_NAME', "atomic_hack")
+)
 
 Base = declarative_base()
 
@@ -50,7 +56,7 @@ class DatabaseSessionManager:
 
     async def startup(self):
         async with self.engine.begin() as conn:
-            # await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
     @contextlib.asynccontextmanager
