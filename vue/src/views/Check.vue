@@ -1,14 +1,32 @@
 <script setup>
 	import FileUploader from '@/components/FileUploader/FileUploader.vue';
 	import ToggleSwitch from 'primevue/toggleswitch';
+	import { shallowRef, computed, inject } from 'vue';
+	import { useUserStore } from '@/stores/user';
 
-	import { shallowRef, computed } from 'vue';
+	const $user = useUserStore();
 
+	const $axios = inject('axios');
 	const fileType = shallowRef('image/*');
 	const files = shallowRef([]);
 	const isActiveSwitch = computed(() => {
 		return !!files.value.length;
 	});
+
+	const upload = async () => {
+		const formData = new FormData();
+
+		const promise = Promise.all(files.value.map(async (file) => {
+			const res = await $axios.get(file.objectURL);
+			formData.append('files[]', res.data);
+		}));
+
+		formData.append('user_id', $user.id);
+
+		promise.then(()=>{
+			$axios.post('/api/yolo/upload', formData);
+		})
+	}
 </script>
 
 <template>
@@ -28,6 +46,8 @@
 			:custom-upload="true"
 			:multiple="true"
 			:accept="fileType"
+			url="/api/yolo/upload/"
+			@uploader="upload"
 		/>
 	</section>
 </template>
