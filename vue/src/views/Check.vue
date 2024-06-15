@@ -15,16 +15,28 @@
 
 	const upload = async () => {
 		const formData = new FormData();
-
-		const promise = Promise.all(files.value.map(async (file) => {
-			const res = await $axios.get(file.objectURL);
-			formData.append('files[]', res.data);
-		}));
+		
+		
+			const promise = Promise.all(files.value.map(async (file) => {
+				if (fileType.value === 'image/*') {
+					const res = await $axios.get(file.objectURL, {responseType: 'blob'});
+					formData.append('files', res.data);
+				} else {
+					formData.append('files', file);
+				}
+			}));
 
 		formData.append('user_id', $user.id);
 
 		promise.then(()=>{
-			$axios.post('/api/yolo/upload', formData);
+			$axios({
+				method: 'post',
+				url: '/api/yolo/upload',
+				data: formData,
+				headers: {
+					'Content-Type': `multipart/form-data;`,
+				},
+			});
 		})
 	}
 </script>
