@@ -14,9 +14,7 @@ class YOLODetection:
 
     def _get_model(self, model_type):
         if model_type == 'nano':
-            print('nano model is not available. Using small model instead.')
-            # return YOLOv10('weights/yolov10n.pt')
-            return YOLOv10('weights/yolov10s.pt')
+            return YOLOv10('weights/yolov10n.pt')
         elif model_type == 'small':
             return YOLOv10('weights/yolov10s.pt')
         elif model_type == 'medium':
@@ -119,7 +117,7 @@ def example(id = 1):
 
     yolo_detector = YOLODetection(src_folder, results_folder, cm_per_frame, cm_per_sec, model_type)
     yolo_detector.detect_images()
-    # yolo_detector.detect_videos() # TODO: test video detection
+    yolo_detector.detect_videos()
 
 if __name__ == '__main__':
     example()
