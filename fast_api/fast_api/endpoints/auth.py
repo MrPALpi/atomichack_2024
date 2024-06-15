@@ -7,9 +7,7 @@ from sqlalchemy import select, insert
 from fast_api.database import db_manager
 from fast_api.database.entities.user import User
 
-
 import hashlib
-
 
 
 router = APIRouter()
@@ -21,23 +19,27 @@ class LoginUser(BaseModel):
     login: str
     password: str
 
-
 @router.post("/login")
 async def registration_user(user: LoginUser):
+    hashed = hashlib.md5(user.password.encode())
+    async with db_manager.get_session() as session:
+        q = select(User).where(
+            User.name == user.login,
+            User.password_hash == hashed.hexdigest()
+        )
+        res = await session.execute(q)
+        return res.scalar()
 
-    # dataBase_password = user.password
-    # hashed = hashlib.md5(dataBase_password.encode())
+    return None
 
-    # async with db_manager.get_session() as session:
-    #     q = select(User).where(
-    #         User.name == user.login,
-    #         User.password_hash == hashed.hexdigest()
-    #     )
-    #     res = await session.execute(q)
-    #     return res.unique().scalars().all()
-    return user
+@router.post("/register")
+async def registration_user(user: LoginUser):
+    hashed = hashlib.md5(user.password.encode())
+    db_user = User(name=user.login, password_hash=hashed.hexdigest())
 
+    async with db_manager.get_session() as session:
+        session.add(db_user)
+        await session.commit()
+        return db_user
 
-@router.get("/")
-async def login_user():
-    return "ТРАХАТЬ"
+    return None

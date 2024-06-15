@@ -13,11 +13,20 @@ services:
 
   fast-api-prod:
     container_name: atomic-hack-fast-api
+    depends_on:
+      - pgsql
     ports:
-      - "80:5000"
+      - "5000:5000"
     build: ./fast_api
     expose:
       - "5000:5000"
+    environment:
+      DEBUG_MODE: ${DEBUG}
+      DB_HOST: atomic-hack-pgsql
+      DB_PORT: 5432
+      DB_LOGIN: ${POSTGRES_LOGIN}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB_NAME}
     networks:
       - atomic-hack
 
@@ -43,10 +52,12 @@ services:
     ports:
       - "5432:5432"
     environment:
+      DEBUG_MODE: ${DEBUG}
+      POSTGRES_LOGIN: ${POSTGRES_LOGIN}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      DEBUG: ${DEBUG}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
     volumes:
-      - docs-pgsql-volume:/var/lib/postgresql/data
+      - atomic-hack-pgsql:/var/lib/postgresql/data
     networks:
       - atomic-hack
 
@@ -56,5 +67,5 @@ networks:
 
 volumes:
   data:
-  docs-pgsql-volume:
+  atomic-hack-pgsql:
     driver: local
