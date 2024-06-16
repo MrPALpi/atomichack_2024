@@ -12,17 +12,29 @@
 		</Column>	
 		<Column field="defects" header="Дефекты" sortable>
 			<template #body="{ data }">
-                <div v-if="data.is_processed && data.defects[0] !== null" class="defects">
-                    <DefectChip v-for="defect in data.defects" :key="data.id + defect" :value="defect"/>
+                <!-- {{ data }} -->
+                <div v-if="!data.is_processed" class="defects">
+                    <Skeleton width="100px" borderRadius="16px"/>
+                    <Skeleton width="100px" borderRadius="16px"/>
+                    <Skeleton width="100px" borderRadius="16px"/>
                 </div>
-				<div v-else-if="!data.is_processed"class="defects">
-                    <Skeleton width="100px" borderRadius="16px"/>
-                    <Skeleton width="100px" borderRadius="16px"/>
-                    <Skeleton width="100px" borderRadius="16px"/>
+                <div v-else-if="prepareFeffects(data.defects).length">
+                    <DefectChip v-for="defect in prepareFeffects(data.defects)" :key="data.id + defect" :value="defect"/>
                 </div>
                 <div v-else>
                     Дефекты не найдены
                 </div>
+
+<!-- 
+                <div v-if="data.is_processed && data.defects[0] !== null" class="defects">
+                    
+                </div>
+				<div v-else-if="!data.is_processed"class="defects">
+                   
+                </div>
+                <div v-else>
+                    
+                </div> -->
 			</template>
             <template #filter="{ filterModel, filterCallback }">
                 <Select v-model="filterModel.value" @change="filterCallback()" :options="defects" placeholder="Поиск по дефектам" style="min-width: 12rem" :showClear="true">
@@ -49,7 +61,7 @@ import Select from 'primevue/select';
 import Skeleton from 'primevue/skeleton';
 import DefectChip from '@/components/DefectChip.vue';
 import { defects, defectColors } from '@/static-data/defects';
-import { inject, shallowRef } from 'vue';
+import { inject, shallowRef, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
@@ -60,6 +72,13 @@ const loading = shallowRef(true)
 
 const statusColor = (status) => status ? 'succes' : 'warn';
 const statusLocale = (status) => status ? 'Обработано' : 'В процессе'
+// const filteredDefects = computed(() => {
+//     return data.defects.filter(el => !!defectColors[el]);
+// })
+
+function prepareFeffects(deffects) {
+    return deffects.filter(el => !!defectColors[el]);
+}
 
 $axios.get(`/api/task/${route.params.id}`).then((res)=>{
     data.value = Object.values(res.data.images);

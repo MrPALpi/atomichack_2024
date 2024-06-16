@@ -9,6 +9,7 @@
 </script>
 <template>
     <Chip class="defect-chip">
+        <!-- v-show="defectLocales[$props.value]" -->
         <span class="defect-chip__color" :style="`background-color: ${defectColors[$props.value]}`"></span>
         <span class="defect-chip__text">
             {{ defectLocales[$props.value] }}
