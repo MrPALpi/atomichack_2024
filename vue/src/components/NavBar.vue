@@ -9,7 +9,7 @@
 		<div class="navbar__container container">
 			<div class="navbar__links">
 				<RouterLink class="navbar__link" to="/">Проверка</RouterLink>
-				<RouterLink class="navbar__link" :to="'/results/' + $user.id">Результаты</RouterLink>
+				<RouterLink class="navbar__link" :to="{ name: 'Tasks', params: { id: $user.id } }">Результаты</RouterLink>
 			</div>
 			<div class="navbar__user">
 				<SplitButton
