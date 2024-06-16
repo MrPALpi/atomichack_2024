@@ -6,7 +6,7 @@
                 Загрузок ещё не было
             </template>
 		<Column field="link" header="Ссылка" style="width: 5%;">
-			<template #body="data">
+			<template #body="{ data }">
 				<router-link :to="{ name: 'Task', params: { id: data.task_id } }">
 					<i class="pi pi-external-link"/>
 				</router-link>

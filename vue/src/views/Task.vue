@@ -20,7 +20,7 @@
                     <Skeleton width="100px" borderRadius="16px"/>
                     <Skeleton width="100px" borderRadius="16px"/>
                 </div>
-                <div>
+                <div v-else>
                     Дефекты не найдены
                 </div>
 			</template>

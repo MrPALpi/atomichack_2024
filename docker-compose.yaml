@@ -6,6 +6,8 @@ services:
     build: ./vue
     expose:
       - "4173:4173"
+    ports:
+      - "4173:4173"
     environment:
       VITE_PROXY_URL: ${VITE_PROXY_URL}
     networks:

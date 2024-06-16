@@ -79,7 +79,11 @@ async def get_task(session: AsyncSessionDep, task_id: int):
 
     for row in res.tuples():
         if images.get(row[0]) is None:
-            images[row[0]] = {"id": row[0], "is_processed": row[1], "defects": [row[2], ]}
+            images[row[0]] = {
+                "id": row[0],
+                "is_processed": row[1],
+                "defects": [row[2], ]
+            }
         else:
             images[row[0]]["defects"].append(row[2])
 

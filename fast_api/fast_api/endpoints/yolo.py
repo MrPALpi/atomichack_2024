@@ -1,5 +1,7 @@
 import json
 
+from typing import Optional
+from sqlalchemy import update
 from pydantic import BaseModel
 # from zipfile import ZipFile
 # import aiofiles
@@ -61,6 +63,25 @@ async def upload_src(
 
 
 @router.post("/upload-result")
-async def upload_result(file: UploadFile = File(...), id: int = Form()):
-    # Defect(attachment_id=2, name="test_deffect")
+async def upload_result(
+    session: AsyncSessionDep,
+    file: UploadFile = File(...),
+    id: int = Form(),
+    tags: List[str] = Form()
+):
+    bytes_list = await file.read()
+
+    stmt = update(Attachment)\
+        .where(Attachment.id == id)\
+        .values(is_processed=True, data=bytes_list)
+    await session.execute(stmt)
+
+    for tag in tags:
+        if tag is None:
+            continue
+        d = Defect(attachment_id=id, name=tag)
+        session.add(d)
+
+    await session.commit()
+
     return True
