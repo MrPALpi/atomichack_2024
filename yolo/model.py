@@ -46,16 +46,16 @@ class YOLODetection:
 #         result_video_folder = os.path.join(self.results_folder, 'videos')
 #         os.makedirs(result_video_folder, exist_ok=True)
         
-        for video_file in os.listdir(video_folder):
-            if video_file.endswith('.mp4'):
-                video_path = os.path.join(video_folder, video_file)
-                cap = cv2.VideoCapture(video_path)
-                width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                fps = cap.get(cv2.CAP_PROP_FPS)
-                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-                result_path = os.path.join(result_video_folder, video_file)
-                out = cv2.VideoWriter(result_path, fourcc, fps, (width, height))
+        # for video_file in os.listdir(video_folder):
+        #     if video_file.endswith('.mp4'):
+        #         video_path = os.path.join(video_folder, video_file)
+        #         cap = cv2.VideoCapture(video_path)
+        #         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        #         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        #         fps = cap.get(cv2.CAP_PROP_FPS)
+        #         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        #         result_path = os.path.join(result_video_folder, video_file)
+        #         out = cv2.VideoWriter(result_path, fourcc, fps, (width, height))
 
 #                 frame_count = 0
 #                 defect_list = []
@@ -68,11 +68,11 @@ class YOLODetection:
 #                     lower_coord = self.cm_per_sec * timestamp
 #                     upper_coord = lower_coord + self.cm_per_frame
                     
-                    pillow_frame = self._get_pillow_image(frame)
-                    result_image, detections = self._process_image(pillow_frame)
-                    defect_list.extend(self._create_defect_list(detections, timestamp, lower_coord, upper_coord))
-                    out.write(self._get_cv2_image(result_image))
-                    frame_count += 1
+                    # pillow_frame = self._get_pillow_image(frame)
+                    # result_image, detections = self._process_image(pillow_frame)
+                    # defect_list.extend(self._create_defect_list(detections, timestamp, lower_coord, upper_coord))
+                    # out.write(self._get_cv2_image(result_image))
+                    # frame_count += 1
 
 #                 cap.release()
 #                 out.release()
