@@ -46,6 +46,7 @@ class YOLODetection:
         video_folder = os.path.join(self.src_folder)
         result_video_folder = os.path.join(self.results_folder, 'videos')
         os.makedirs(result_video_folder, exist_ok=True)
+
         
         for video_file in os.listdir(video_folder):
             if video_file.endswith('.mp4'):
@@ -78,6 +79,7 @@ class YOLODetection:
                 cap.release()
                 out.release()
                 self._save_defect_list(defect_list, result_video_folder, video_file)
+
     
     def _process_image(self, image):
         cv2_image = self._get_cv2_image(image)
@@ -131,6 +133,7 @@ class YOLODetection:
                 'upper_coord': upper_coord
             })
         return defect_list
+
 
     def _save_defect_list(self, defect_list, folder, file_name):
         result_file_path = os.path.join(folder, f'{os.path.splitext(file_name)[0]}_defects.json')
@@ -188,6 +191,3 @@ def example(id=1):
     yolo_detector.results_folder = results_folder
     yolo_detector.detect_images()
     yolo_detector.detect_videos()
-
-# if __name__ == '__main__':
-#     example()
