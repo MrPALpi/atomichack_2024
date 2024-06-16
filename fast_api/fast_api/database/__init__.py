@@ -1,9 +1,9 @@
-from sqlalchemy.orm import declarative_base
-
+import os
 import contextlib
 from typing import Optional
 
-from sqlalchemy import exc
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import URL, exc
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -11,7 +11,15 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-database_url = "postgresql+asyncpg://postgres:example@172.18.0.2:5432/atomic_hack"
+
+database_url = URL.create(
+    "postgresql+asyncpg",
+    username=os.environ.get('DB_USERNAME', "postgres"),
+    password=os.environ.get('DB_PASSWORD', "example"),
+    host=os.environ.get('DB_HOST', '127.0.0.1'),
+    port=os.environ.get('DB_PORT', 5432),
+    database=os.environ.get('DB_NAME', "atomic_hack")
+)
 
 Base = declarative_base()
 

@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { layouts } from '../layouts'
+import { middlewareTypes, middleware } from './middlewares'
+import { useUserStore } from '@/stores/user'
+
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,22 +13,25 @@ const router = createRouter({
             component: () => import('@/views/Check.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: middlewareTypes.AUTH
             },
         },
         {
-            path: '/results/:id',
-            name: 'Results',
-            component: () => import('@/views/Results.vue'),
+            path: '/tasks/:id',
+            name: 'Tasks',
+            component: () => import('@/views/Tasks.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: middlewareTypes.AUTH
             },
         },
         {
-            path: '/result/:id',
-            name: 'Result',
-            component: () => import('@/views/Result.vue'),
+            path: '/task/:id',
+            name: 'Task',
+            component: () => import('@/views/Task.vue'),
             meta: {
                 layout: layouts.DEFAULT,
+                middleware: middlewareTypes.AUTH
             },
         },
         {
@@ -34,6 +40,7 @@ const router = createRouter({
             component: () => import('@/views/Auth.vue'),
             meta: {
                 layout: layouts.LOGIN,
+                middleware: middlewareTypes.ENTERED
             },
         },
         {
@@ -46,5 +53,11 @@ const router = createRouter({
         }
     ]
 })
+
+
+router.beforeEach((to, from, next)=>{
+    const $user = useUserStore();
+    middleware(to, from, next, $user.isAuth)    
+});
 
 export default router

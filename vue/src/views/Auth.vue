@@ -17,7 +17,7 @@ const submit = (e) => {
         <template #content>
             <form @submit.prevent="submit" class="login-form">
                     <InputText class="login-form__input" name="login" type="text" required="true" minlength="3" placeholder="Логин"/>
-                    <InputText class="login-form__input" name="password" type="password" required="true" minlength="5" placeholder="Пароль"/>
+                    <InputText class="login-form__input" name="password" type="password" required="true" minlength="4" placeholder="Пароль"/>
                 <Button type="submit">Войти</Button>
             </form>
         </template>
