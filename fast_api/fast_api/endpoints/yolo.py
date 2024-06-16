@@ -11,7 +11,7 @@ from fast_api.database import db_manager
 from fast_api.database.entities.task import Task
 from fast_api.database.entities.attachment import Attachment
 from fast_api.database.entities.defect import Defect
-from fast_api.core.dependencies import YoloSocket, AsyncSessionDep
+from fast_api.core.dependencies import  AsyncSessionDep
 
 router = APIRouter()
 
@@ -30,7 +30,6 @@ async def upload_zip(file: UploadFile, db_session: AsyncSessionDep):
 @router.post("/upload-src")
 async def upload_src(
         session: AsyncSessionDep,
-        socket: YoloSocket,
         files: List[UploadFile] = File(...),
         user_id: int = Form()
 ):
@@ -55,24 +54,13 @@ async def upload_src(
 
     await session.commit()
 
-    tcp_data = {
-        "task_id": task.id
-    }
-    yolo_error = False
-
-    # Отправка task id для нейронки
-    if socket is not None:
-        socket.sendall(json.dumps(tcp_data).encode('utf-8'))
-    else:
-        yolo_error = True
-
     return {
         "file_size": len(files),
-        "status": "failed" if yolo_error else "success"
+        "status": "success"
     }
 
 
 @router.post("/upload-result")
-async def upload_result():
-    Defect(attachment_id=2, name="test_deffect")
-    return []
+async def upload_result(file: UploadFile = File(...), id: int = Form()):
+    # Defect(attachment_id=2, name="test_deffect")
+    return True
