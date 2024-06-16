@@ -1,8 +1,9 @@
 <script setup>
 	import FileUpload from 'primevue/fileupload';
 	import FileCards from './FileCards.vue';
-	import { defineModel } from 'vue';
+	import { defineModel, defineEmits } from 'vue';
 
+	const $emit = defineEmits(['uploader'])
 	const files = defineModel();
 
 	const onSelectedFiles = (event) => {
@@ -20,6 +21,7 @@
 		@remove="onRemoveFile"
 		@clear="files = []"
 		class="file-upload"
+		@uploader="$emit('uploader')"
 	>
 		<template #content="{ files, removeFileCallback }">
 			<file-cards :value="files" @remove-file="removeFileCallback" />

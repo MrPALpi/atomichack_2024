@@ -6,6 +6,8 @@
 <template>
 	<Toast />
 	<app-layout>
-		<RouterView />
+		<Suspense>
+			<RouterView />
+		</Suspense>
 	</app-layout>
 </template>

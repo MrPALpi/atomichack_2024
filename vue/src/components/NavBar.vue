@@ -1,5 +1,5 @@
 <script setup>
-	import { useUserStore } from '../stores/user';
+	import { useUserStore } from '@/stores/user';
 	import SplitButton from 'primevue/splitbutton';
 
 	const $user = useUserStore();
@@ -9,11 +9,11 @@
 		<div class="navbar__container container">
 			<div class="navbar__links">
 				<RouterLink class="navbar__link" to="/">Проверка</RouterLink>
-				<RouterLink class="navbar__link" :to="'/results/' + $user.id">Результаты</RouterLink>
+				<RouterLink class="navbar__link" :to="{ name: 'Tasks', params: { id: $user.id } }">Результаты</RouterLink>
 			</div>
 			<div class="navbar__user">
 				<SplitButton
-					:label="$user.login"
+					:label="$user.name"
 					:model="[
 						{
 							label: 'Выйти',

@@ -6,41 +6,54 @@ import * as toast from '@/plugins/toast'
 export const useUserStore = defineStore('user', () => {
     const router = useRouter()
     const axios = inject('axios')
-    const user = ref({
-        id: '1',
-        login: 'Ivan'
-    })
+    const user = ref({})
 
-    const isAuth = computed(() => !!Object.keys(user.value).length);
+    const isAuth = computed(() => {
+        const isAuth = !!user.value.id
 
-    const login = computed(() => user.value.login);
+        if (isAuth) return isAuth
+
+        setUserFromCookie();
+
+        return !!user.value.id
+    });
+    const name = computed(() => user.value.name);
     const id = computed(() => user.value.id);
+    const isAdmin = computed(() => user.value.is_admin);
 
 
     function setUser(newUser) {
+        document.cookie = `user=${JSON.stringify(newUser)}; path=/; domain=.${location.hostname};` 
         user.value = newUser
     }
 
     function exit() {
-        setUser('');
+        setUser({});
         router.push('/auth');
+    }
+
+    function setUserFromCookie () {
+        const userString = ('; '+document.cookie).split(`; user=`).pop().split(';')[0];
+        
+        if (!userString) {
+            return
+        }
+
+        user.value = JSON.parse(userString);
     }
 
     async function enter(formData) {
 
-        const result = await axios.post('/api/auth/', formData).catch((e) => console.log(e));
+        const result = await axios.post('/api/auth/login', formData).catch((e) => console.log(e));
         const newUser = result?.data;
 
         if (!!newUser) {
-            setUser(formData);
+            setUser(newUser);
             router.push('/');
         } else {
             toast.error('Error', 'Неверный логин или пароль');
         }
-        
-
-
     }
 
-    return { login, id, isAuth, enter, exit }
+    return { name, id, isAuth, isAdmin, enter, exit }
 })

@@ -41,10 +41,10 @@ class YOLODetection:
                 result_image, detections = self._process_image(image)
                 result_image.save(os.path.join(result_image_folder, image_file))
 
-    def detect_videos(self):
-        video_folder = os.path.join(self.src_folder)
-        result_video_folder = os.path.join(self.results_folder, 'videos')
-        os.makedirs(result_video_folder, exist_ok=True)
+#     def detect_videos(self):
+#         video_folder = os.path.join(self.src_folder)
+#         result_video_folder = os.path.join(self.results_folder, 'videos')
+#         os.makedirs(result_video_folder, exist_ok=True)
         
         for video_file in os.listdir(video_folder):
             if video_file.endswith('.mp4'):
@@ -57,16 +57,16 @@ class YOLODetection:
                 result_path = os.path.join(result_video_folder, video_file)
                 out = cv2.VideoWriter(result_path, fourcc, fps, (width, height))
 
-                frame_count = 0
-                defect_list = []
+#                 frame_count = 0
+#                 defect_list = []
 
-                while cap.isOpened():
-                    ret, frame = cap.read()
-                    if not ret:
-                        break
-                    timestamp = frame_count / fps
-                    lower_coord = self.cm_per_sec * timestamp
-                    upper_coord = lower_coord + self.cm_per_frame
+#                 while cap.isOpened():
+#                     ret, frame = cap.read()
+#                     if not ret:
+#                         break
+#                     timestamp = frame_count / fps
+#                     lower_coord = self.cm_per_sec * timestamp
+#                     upper_coord = lower_coord + self.cm_per_frame
                     
                     pillow_frame = self._get_pillow_image(frame)
                     result_image, detections = self._process_image(pillow_frame)
@@ -74,9 +74,9 @@ class YOLODetection:
                     out.write(self._get_cv2_image(result_image))
                     frame_count += 1
 
-                cap.release()
-                out.release()
-                self._save_defect_list(defect_list, result_video_folder, video_file)
+#                 cap.release()
+#                 out.release()
+#                 self._save_defect_list(defect_list, result_video_folder, video_file)
     
     def _process_image(self, image):
         cv2_image = self._get_cv2_image(image)
@@ -121,10 +121,10 @@ class YOLODetection:
             })
         return defect_list
 
-    def _save_defect_list(self, defect_list, folder, file_name):
-        result_file_path = os.path.join(folder, f'{os.path.splitext(file_name)[0]}_defects.json')
-        with open(result_file_path, 'w') as f:
-            json.dump(defect_list, f, indent=4)
+#     def _save_defect_list(self, defect_list, folder, file_name):
+#         result_file_path = os.path.join(folder, f'{os.path.splitext(file_name)[0]}_defects.json')
+#         with open(result_file_path, 'w') as f:
+#             json.dump(defect_list, f, indent=4)
 
 def example(id=1):
     src_folder = f'task/{id}/src'
