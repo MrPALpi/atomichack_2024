@@ -83,6 +83,15 @@ class YOLODetection:
         results = self.model.predict(cv2_image)[0]
         detections = []
 
+        # Define colors for classes
+        class_colors = {
+            0: (0, 255, 0),     # Green
+            1: (128, 0, 128),   # Purple
+            2: (255, 0, 0),     # Red
+            4: (0, 0, 255),     # Blue
+            5: (255, 165, 0)    # Orange
+        }
+
         for result in results:
             x1, y1, x2, y2 = map(int, result.boxes.xyxy.numpy()[0])
             cls = int(result.boxes.cls.numpy()[0])
@@ -94,8 +103,9 @@ class YOLODetection:
                     'class': result.names[cls],
                     'center': {'x': x_center, 'y': y_center}
                 })
-                cv2.rectangle(cv2_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(cv2_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                color = class_colors.get(cls, (0, 255, 0))  # Default to green if class not in defined colors
+                cv2.rectangle(cv2_image, (x1, y1), (x2, y2), color, 2)
+                cv2.putText(cv2_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         
         return self._get_pillow_image(cv2_image), detections
 
@@ -123,7 +133,9 @@ def example(id=1):
     cm_per_frame = 50
     cm_per_sec = 10
 
-    yolo_detector = YOLODetection(src_folder, results_folder, cm_per_frame, cm_per_sec, model_type)
+    yolo_detector = YOLODetection(cm_per_frame, cm_per_sec, model_type)
+    yolo_detector.src_folder = src_folder
+    yolo_detector.results_folder = results_folder
     yolo_detector.detect_images()
     yolo_detector.detect_videos()
 
