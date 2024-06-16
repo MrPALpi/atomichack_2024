@@ -7,7 +7,7 @@ from io import BytesIO
 from ultralytics import YOLOv10
 
 class YOLODetection:
-    def __init__(self, cm_per_frame, cm_per_sec, model_type='small'):
+    def __init__(self, cm_per_frame=10, cm_per_sec=10, model_type='small'):
         self.cm_per_frame = cm_per_frame
         self.cm_per_sec = cm_per_sec
         self.model = self._get_model(model_type)
@@ -40,6 +40,13 @@ class YOLODetection:
                 image = Image.open(image_path)
                 result_image, detections = self._process_image(image)
                 result_image.save(os.path.join(result_image_folder, image_file))
+                self._save_detection_results(image_file, detections, image.size)
+
+    def detect_videos(self):
+        video_folder = os.path.join(self.src_folder)
+        result_video_folder = os.path.join(self.results_folder, 'videos')
+        os.makedirs(result_video_folder, exist_ok=True)
+
         
         for video_file in os.listdir(video_folder):
             if video_file.endswith('.mp4'):
@@ -52,33 +59,68 @@ class YOLODetection:
                 result_path = os.path.join(result_video_folder, video_file)
                 out = cv2.VideoWriter(result_path, fourcc, fps, (width, height))
 
+                frame_count = 0
+                defect_list = []
+
+                while cap.isOpened():
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
+                    timestamp = frame_count / fps
+                    lower_coord = self.cm_per_sec * timestamp
+                    upper_coord = lower_coord + self.cm_per_frame
                     
-                pillow_frame = self._get_pillow_image(frame)
-                result_image, detections = self._process_image(pillow_frame)
-                defect_list.extend(self._create_defect_list(detections, timestamp, lower_coord, upper_coord))
-                out.write(self._get_cv2_image(result_image))
-                frame_count += 1
+                    pillow_frame = self._get_pillow_image(frame)
+                    result_image, detections = self._process_image(pillow_frame)
+                    defect_list.extend(self._create_defect_list(detections, timestamp, lower_coord, upper_coord))
+                    out.write(self._get_cv2_image(result_image))
+                    frame_count += 1
+
+                cap.release()
+                out.release()
+                self._save_defect_list(defect_list, result_video_folder, video_file)
+
     
     def _process_image(self, image):
         cv2_image = self._get_cv2_image(image)
-        results = self.model.predict(cv2_image)[0]
+        results = self.model.predict(cv2_image, conf=0.1)[0]
         detections = []
+
+        # Define colors for classes
+        class_colors = {
+            0: (0, 255, 0),     # Green
+            1: (128, 0, 128),   # Purple
+            2: (255, 0, 0),     # Red
+            4: (0, 0, 255),     # Blue
+            5: (255, 165, 0)    # Orange
+        }
 
         for result in results:
             x1, y1, x2, y2 = map(int, result.boxes.xyxy.numpy()[0])
             cls = int(result.boxes.cls.numpy()[0])
-            if cls != 3:  # Exclude "line" class (class 3)
-                label = f'{result.names[cls]}'
-                x_center = (x1 + x2) // 2
-                y_center = (y1 + y2) // 2
-                detections.append({
-                    'class': result.names[cls],
-                    'center': {'x': x_center, 'y': y_center}
-                })
-                cv2.rectangle(cv2_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(cv2_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            # Skip "line" class
+            if cls == 3:
+                continue
+
+            if cls > 3:
+                cls -= 1
+            
+            label = f'{result.names[cls]}'
+            x_center = (x1 + x2) // 2
+            y_center = (y1 + y2) // 2
+            detections.append({
+                'class': result.names[cls],
+                'class_id': cls,
+                'center': {'x': x_center, 'y': y_center},
+                'bbox': {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2}
+            })
+            color = class_colors.get(cls, (0, 255, 0))
+            cv2.rectangle(cv2_image, (x1, y1), (x2, y2), color, 2)
+            cv2.putText(cv2_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         
         return self._get_pillow_image(cv2_image), detections
+
 
     def _create_defect_list(self, detections, timestamp, lower_coord, upper_coord):
         defect_list = []
@@ -92,6 +134,51 @@ class YOLODetection:
             })
         return defect_list
 
+
+    def _save_defect_list(self, defect_list, folder, file_name):
+        result_file_path = os.path.join(folder, f'{os.path.splitext(file_name)[0]}_defects.json')
+        with open(result_file_path, 'w') as f:
+            json.dump(defect_list, f, indent=4)
+
+    def _save_detection_results(self, filename, detections, image_size):
+        results = {
+            "filename": [],
+            "class_id": [],
+            "rel_x": [],
+            "rel_y": [],
+            "width": [],
+            "height": []
+        }
+
+        image_width, image_height = image_size
+
+        for detection in detections:
+            x1, y1, x2, y2 = detection['bbox'].values()
+            class_id = detection['class_id']
+            rel_x = (x1 + x2) / 2 / image_width
+            rel_y = (y1 + y2) / 2 / image_height
+            width = (x2 - x1) / image_width
+            height = (y2 - y1) / image_height
+
+            results["filename"].append(filename)
+            results["class_id"].append(class_id)
+            results["rel_x"].append(rel_x)
+            results["rel_y"].append(rel_y)
+            results["width"].append(width)
+            results["height"].append(height)
+
+        output_file_path = os.path.join(self.results_folder, 'detection_results.json')
+        if os.path.exists(output_file_path):
+            with open(output_file_path, 'r') as f:
+                existing_results = json.load(f)
+            for key in results:
+                existing_results[key].extend(results[key])
+        else:
+            existing_results = results
+
+        with open(output_file_path, 'w') as f:
+            json.dump(existing_results, f, indent=4)
+
 def example(id=1):
     src_folder = f'task/{id}/src'
     results_folder = f'task/{id}/results'
@@ -99,6 +186,8 @@ def example(id=1):
     cm_per_frame = 50
     cm_per_sec = 10
 
-    yolo_detector = YOLODetection(src_folder, results_folder, cm_per_frame, cm_per_sec, model_type)
+    yolo_detector = YOLODetection(cm_per_frame, cm_per_sec, model_type)
+    yolo_detector.src_folder = src_folder
+    yolo_detector.results_folder = results_folder
     yolo_detector.detect_images()
     yolo_detector.detect_videos()
