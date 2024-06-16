@@ -5,9 +5,7 @@
 	import { useUserStore } from '@/stores/user';
 	import * as toast from '@/plugins/toast'
 
-
 	const $user = useUserStore();
-
 	const $axios = inject('axios');
 	const fileType = shallowRef('image/*');
 	const files = shallowRef([]);
@@ -31,7 +29,7 @@
 		promise.then(async ()=>{
 			const res = await $axios({
 				method: 'post',
-				url: '/api/yolo/upload',
+				url: '/api/yolo/upload-src',
 				data: formData,
 				headers: {
 					'Content-Type': `multipart/form-data;`,

@@ -17,18 +17,18 @@ const router = createRouter({
             },
         },
         {
-            path: '/results/:id',
-            name: 'Results',
-            component: () => import('@/views/Results.vue'),
+            path: '/tasks/:id',
+            name: 'Tasks',
+            component: () => import('@/views/Tasks.vue'),
             meta: {
                 layout: layouts.DEFAULT,
                 middleware: middlewareTypes.AUTH
             },
         },
         {
-            path: '/result/:id',
-            name: 'Result',
-            component: () => import('@/views/Result.vue'),
+            path: '/task/:id',
+            name: 'Task',
+            component: () => import('@/views/Task.vue'),
             meta: {
                 layout: layouts.DEFAULT,
                 middleware: middlewareTypes.AUTH
