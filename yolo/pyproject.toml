@@ -7,11 +7,12 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-opencv-python = "^4.10.0.82"
+python = "^3.11"
 numpy = "^1.26.4"
 ultralytics = {git = "https://github.com/THU-MIG/yolov10.git"}
 huggingface-hub = "^0.23.4"
+opencv-python = "^4.10.0.82"
+opencv-python-headless = "^4.10.0.82"
 
 [build-system]
 requires = ["poetry-core"]
